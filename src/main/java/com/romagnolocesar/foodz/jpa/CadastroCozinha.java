@@ -29,8 +29,17 @@ public class CadastroCozinha {
 	}
 	
 	@Transactional
+	@GetMapping(value="cozinhas/atualizar")
+	public Cozinha atualizar(@RequestParam Long id, @RequestParam String nome) {
+		Cozinha cozinha = this.buscar(id); 
+		cozinha.setNome(nome);
+		
+		return(this.adicionar(cozinha));
+	}
+	
+	@Transactional
 	@GetMapping(value="cozinhas/buscar")
-	public Cozinha buscar(@RequestParam Long id) {
+	public Cozinha buscar(@RequestParam Long id ) {
 		return manager.find(Cozinha.class, id);
 	}
 	
@@ -54,9 +63,12 @@ public class CadastroCozinha {
 	}
 	
 	public Cozinha adicionar(Cozinha cozinha) {
+		if(cozinha.getId() != null) {
+			System.out.println("LOG: Cozinha Atualizada!");			
+		}else {
+			System.out.println("LOG: Cozinha Adicionada!");	
+		}
 		return manager.merge(cozinha);
-		
-//		System.out.println("LOG: Cozinha Adicionada!");
 //		return "Cozinha Adicionada!";
 	}
 	
