@@ -13,13 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.romagnolocesar.foodz.domain.model.Cozinha;
+import com.romagnolocesar.foodz.domain.repository.CozinhaRepository;
+import com.romagnolocesar.foodz.infrastructure.repository.CozinhaRepositoryImpl;
 
 //@Component
 @RestController
 public class CadastroCozinha {
 	
-	//EntityManager <- Gerencia o conceito de persistencia
 	@PersistenceContext
+	//EntityManager <- Gerencia o conceito de persistencia
 	private EntityManager manager;
 	
 	/*
