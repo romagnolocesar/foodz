@@ -12,7 +12,7 @@ import javax.persistence.Id;
 public class Restaurante {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY) //Deixa a responsabilidade do AutoIncrement para o Banco
 	private Long id;
 	
 	private String nome;
