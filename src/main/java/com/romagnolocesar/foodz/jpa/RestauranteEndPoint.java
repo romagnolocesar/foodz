@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.TransactionScoped;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.romagnolocesar.foodz.domain.model.Cozinha;
 import com.romagnolocesar.foodz.domain.model.Restaurante;
-import com.romagnolocesar.foodz.domain.repository.RestauranteRepository;
-import com.romagnolocesar.foodz.infrastructure.repository.RestauranteRepositoryImpl;
 
 @RestController
 public class RestauranteEndPoint {
@@ -81,8 +78,6 @@ public class RestauranteEndPoint {
 		manager.remove(restaurante);
 		System.out.printf("REMOVIDO %d - %s \n", restaurante.getId(), restaurante.getNome());
 	}
-	
-	
 	
 	
 	public Restaurante salvar(Restaurante restaurante) {
