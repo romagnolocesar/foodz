@@ -22,3 +22,15 @@ insert into forma_pagamento(descricao) values ('Voucher');
 insert into permissao_usuario(nome, descricao) values ('Cadastrar Novos Usuários', 'Cadastrar novos usuarios no sistema.');
 insert into permissao_usuario(nome, descricao) values ('Cadastrar Novas Cozinhas', 'Cadastrar novas cozinhas no sistema.');
 insert into permissao_usuario(nome, descricao) values ('Alterar Permissoes', 'Alterar as permissoes dos usuarios');
+
+-- ESTADOS ---
+insert into estado (nome) values ('São Paulo');
+insert into estado (nome) values ('Paraná');
+insert into estado (nome) values ('Mato Grosso');
+insert into estado (nome) values ('Minas Gerais');
+
+-- CIDADES ---
+insert into cidade (nome, estado_id) values ('Jaú', 1);
+insert into cidade (nome, estado_id) values ('Jandaia do SUl', 2);
+insert into cidade (nome, estado_id) values ('Amambaí', 3);
+insert into cidade (nome, estado_id) values ('Belo Horizonte', 4);
