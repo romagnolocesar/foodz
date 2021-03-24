@@ -12,12 +12,15 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class FormaPagamento {
+public class PermissaoUsuario {
 	
 	@EqualsAndHashCode.Include
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id; 
+	@GeneratedValue(strategy=GenerationType.IDENTITY) //Deixa a responsabilidade do AutoIncrement para o Banco
+	private Long id;
+	
+	@Column(nullable = false)
+	private String nome;
 	
 	@Column(nullable = false)
 	private String descricao;

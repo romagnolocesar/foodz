@@ -17,3 +17,8 @@ insert into forma_pagamento(descricao) values ('Débito');
 insert into forma_pagamento(descricao) values ('Vale Alimentação');
 insert into forma_pagamento(descricao) values ('Vale Refeição');
 insert into forma_pagamento(descricao) values ('Voucher');
+
+-- PERMISSOES DE USUARIOS ---
+insert into permissao_usuario(nome, descricao) values ('Cadastrar Novos Usuários', 'Cadastrar novos usuarios no sistema.');
+insert into permissao_usuario(nome, descricao) values ('Cadastrar Novas Cozinhas', 'Cadastrar novas cozinhas no sistema.');
+insert into permissao_usuario(nome, descricao) values ('Alterar Permissoes', 'Alterar as permissoes dos usuarios');

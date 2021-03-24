@@ -11,13 +11,11 @@ import com.romagnolocesar.foodz.domain.repository.RestauranteRepository;
 
 public class RestauranteRepositoryImpl implements RestauranteRepository{
 
-	@PersistenceContext
-	private EntityManager manager;
 
 	@Override
 	public List<Restaurante> todos() {
-		TypedQuery<Restaurante> query = manager.createQuery("from Restaurante", Restaurante.class);
-		return query.getResultList();
+		// TODO Auto-generated method stub
+		return null;	
 	}
 
 	@Override
