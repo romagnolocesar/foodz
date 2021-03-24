@@ -9,6 +9,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.romagnolocesar.foodz.domain.model.Cozinha;
@@ -25,6 +26,12 @@ public class CadastroCozinha {
 	public List<Cozinha> listar() {
 		TypedQuery<Cozinha> query = manager.createQuery("from Cozinha", Cozinha.class);
 		return query.getResultList();
+	}
+	
+	@Transactional
+	@GetMapping(value="cozinhas/buscar")
+	public Cozinha buscar(@RequestParam Long id) {
+		return manager.find(Cozinha.class, id);
 	}
 	
 	@Transactional
