@@ -1,5 +1,6 @@
 package com.romagnolocesar.foodz.jpa;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -63,7 +64,10 @@ public class RestauranteEndPoint {
 	@GetMapping(value="restaurantes/add")
 	public Restaurante adicionar(@RequestParam String nome) {
 		Restaurante restaurante = new Restaurante();
+		Cozinha cozinha = manager.find(Cozinha.class, 1L);
 		restaurante.setNome(nome);
+		restaurante.setTaxaFrete(new BigDecimal("0.1"));
+		restaurante.setCozinha(cozinha);
 		return manager.merge(restaurante);
 	}
 	
