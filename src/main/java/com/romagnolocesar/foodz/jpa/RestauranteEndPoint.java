@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.romagnolocesar.foodz.domain.model.Cozinha;
 import com.romagnolocesar.foodz.domain.model.Restaurante;
+import com.romagnolocesar.foodz.domain.repository.RestauranteRepository;
+import com.romagnolocesar.foodz.infrastructure.repository.RestauranteRepositoryImpl;
 
 @RestController
 public class RestauranteEndPoint {

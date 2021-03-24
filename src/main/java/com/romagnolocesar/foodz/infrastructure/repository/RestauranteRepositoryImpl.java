@@ -3,13 +3,15 @@ package com.romagnolocesar.foodz.infrastructure.repository;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.romagnolocesar.foodz.domain.model.Restaurante;
 import com.romagnolocesar.foodz.domain.repository.RestauranteRepository;
 
 public class RestauranteRepositoryImpl implements RestauranteRepository{
-	
+
+	@PersistenceContext
 	private EntityManager manager;
 
 	@Override
