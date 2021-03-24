@@ -20,7 +20,6 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 		
 		@Override
 		public List<Cozinha> todas() {
-			System.out.println("ENTREI NO REPOSITORIO");
 			TypedQuery<Cozinha> query = manager.createQuery("from Cozinha", Cozinha.class);
 			return query.getResultList();
 		}
