@@ -20,7 +20,6 @@ public class CadastroRestauranteService {
 	CozinhaRepository cozinhaRepository;
 	
 	public List<Restaurante> listar(){
-		System.out.println("Entrei CADASTRO restaurante Service");
 		return restauranteRepository.listar();
 	}
 	
