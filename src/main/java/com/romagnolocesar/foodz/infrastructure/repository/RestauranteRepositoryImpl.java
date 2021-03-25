@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.romagnolocesar.foodz.domain.model.Restaurante;
 import com.romagnolocesar.foodz.domain.repository.RestauranteRepository;
@@ -30,6 +31,12 @@ public class RestauranteRepositoryImpl implements RestauranteRepository{
 	public Restaurante adicionar(Restaurante restaurante) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Transactional
+	@Override
+	public Restaurante salvar(Restaurante restaurante) {
+		return manager.merge(restaurante);
 	}
 
 	@Override

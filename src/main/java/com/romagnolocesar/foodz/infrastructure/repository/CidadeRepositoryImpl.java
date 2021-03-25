@@ -31,7 +31,6 @@ public class CidadeRepositoryImpl implements CidadeRepository {
 	@Transactional
 	@Override
 	public Cidade salvar(Cidade cidade) {
-		System.out.println("EEEERRRRROOOO\n" + cidade.getNome() + "\n" + cidade.getId()+ "\n" + cidade.getEstado());
 		return manager.merge(cidade);
 	}
 	
