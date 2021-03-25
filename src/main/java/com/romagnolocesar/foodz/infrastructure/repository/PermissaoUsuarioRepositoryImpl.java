@@ -30,8 +30,6 @@ public class PermissaoUsuarioRepositoryImpl implements PermissaoUsuarioRepositor
 
 	@Override
 	public PermissaoUsuario salvar(PermissaoUsuario permissaousuario) {
-		System.out.println("Nome::::::: "+ permissaousuario.getNome()+ "\n");
-		System.out.println("Descrição::::::: "+ permissaousuario.getDescricao()+ "\n");
 		return manager.merge(permissaousuario);
 	}
 
