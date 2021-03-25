@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.romagnolocesar.foodz.domain.model.Estado;
 import com.romagnolocesar.foodz.domain.model.PermissaoUsuario;
 import com.romagnolocesar.foodz.domain.repository.PermissaoUsuarioRepository;
 
