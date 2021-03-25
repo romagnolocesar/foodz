@@ -29,9 +29,10 @@ public class PermissaoUsuarioRepositoryImpl implements PermissaoUsuarioRepositor
 	}
 
 	@Override
-	public PermissaoUsuario adicionar(PermissaoUsuario permissaousuario) {
-		// TODO Auto-generated method stub
-		return null;
+	public PermissaoUsuario salvar(PermissaoUsuario permissaousuario) {
+		System.out.println("Nome::::::: "+ permissaousuario.getNome()+ "\n");
+		System.out.println("Descrição::::::: "+ permissaousuario.getDescricao()+ "\n");
+		return manager.merge(permissaousuario);
 	}
 
 	@Override

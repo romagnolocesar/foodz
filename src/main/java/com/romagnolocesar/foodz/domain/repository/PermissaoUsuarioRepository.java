@@ -8,7 +8,7 @@ public interface PermissaoUsuarioRepository {
 	
 	List<PermissaoUsuario> listar();
 	PermissaoUsuario buscar(Long id);
-	PermissaoUsuario adicionar(PermissaoUsuario cozinha);
+	PermissaoUsuario salvar(PermissaoUsuario cozinha);
 	void remover(PermissaoUsuario cozinha);
 	
 }
