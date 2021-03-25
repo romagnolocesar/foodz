@@ -55,19 +55,35 @@ public class CozinhaController {
 	}
 	
 	@PutMapping("/{cozinhaId}")
-	public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha){
-		return cadastroCozinhaService.atualizar(cozinhaId, cozinha);
+	public ResponseEntity<?> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha){
+		boolean isCozinha = this.buscar(cozinhaId).getBody() != null ? true : false;
+		
+		if(isCozinha) {
+			try {
+				return cadastroCozinhaService.atualizar(cozinhaId, cozinha);
+			}catch(EntidadeNaoEncontradaException e) {
+				return ResponseEntity
+						.status(HttpStatus.NOT_FOUND)
+						.body(e.getMessage());
+			}
+		}
+		
+		return ResponseEntity
+				.status(HttpStatus.NOT_FOUND)
+				.body(String.format(
+						"Não existe cadastro de cozinha com código %d",
+						cozinhaId));
 	}
 	
 	@DeleteMapping("/{cozinhaId}")
-	public ResponseEntity<Cozinha> remover(@PathVariable Long cozinhaId) {
+	public ResponseEntity<?> remover(@PathVariable Long cozinhaId) {
 		try {
 			cadastroCozinhaService.remover(cozinhaId);
 			return ResponseEntity.noContent().build();
 		}catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}catch(EntidadeEmUsoException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
 	}
 }
