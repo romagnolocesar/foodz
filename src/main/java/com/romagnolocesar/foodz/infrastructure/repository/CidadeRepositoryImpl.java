@@ -2,38 +2,44 @@ package com.romagnolocesar.foodz.infrastructure.repository;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.romagnolocesar.foodz.domain.model.Cidade;
 import com.romagnolocesar.foodz.domain.repository.CidadeRepository;
 
+@Component
 public class CidadeRepositoryImpl implements CidadeRepository {
+	
+	@PersistenceContext
+	private EntityManager manager;
+	
 	@Override
-	public List<Cidade> todos() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Cidade> listar() {
+		return manager.createQuery("from Cidade", Cidade.class)
+				.getResultList();
 	}
-
+	
 	@Override
-	public Cidade porId(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Cidade buscar(Long id) {
+		return manager.find(Cidade.class, id);
 	}
-
+	
+	@Transactional
 	@Override
-	public Cidade adicionar(Cidade cidade) {
-		// TODO Auto-generated method stub
-		return null;
+	public Cidade salvar(Cidade cidade) {
+		System.out.println("EEEERRRRROOOO\n" + cidade.getNome() + "\n" + cidade.getId()+ "\n" + cidade.getEstado());
+		return manager.merge(cidade);
 	}
-
+	
+	@Transactional
 	@Override
 	public void remover(Cidade cidade) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Cidade atualizar(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		cidade = buscar(cidade.getId());
+		manager.remove(cidade);
 	}
 		
 		

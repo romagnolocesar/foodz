@@ -4,24 +4,26 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+
+import org.springframework.stereotype.Component;
 
 import com.romagnolocesar.foodz.domain.model.Restaurante;
 import com.romagnolocesar.foodz.domain.repository.RestauranteRepository;
 
+@Component
 public class RestauranteRepositoryImpl implements RestauranteRepository{
-
+	
+	@PersistenceContext
+	EntityManager manager;
 
 	@Override
-	public List<Restaurante> todos() {
-		// TODO Auto-generated method stub
-		return null;	
+	public List<Restaurante> listar() {
+		return manager.createQuery("from Restaurante", Restaurante.class).getResultList();
 	}
 
 	@Override
-	public Restaurante porId(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Restaurante buscar(Long id) {
+		return manager.find(Restaurante.class, id);
 	}
 
 	@Override
@@ -35,11 +37,4 @@ public class RestauranteRepositoryImpl implements RestauranteRepository{
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public Restaurante atualizar(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }

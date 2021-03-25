@@ -1,41 +1,46 @@
 package com.romagnolocesar.foodz.infrastructure.repository;
-
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.romagnolocesar.foodz.domain.model.Cozinha;
 import com.romagnolocesar.foodz.domain.repository.CozinhaRepository;
 
+
+
+@Component
 public class CozinhaRepositoryImpl implements CozinhaRepository {
-	@Override
-	public List<Cozinha> todas() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
+	@PersistenceContext
+	private EntityManager manager;
+	
 	@Override
-	public Cozinha porId(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Cozinha> listar() {
+		return manager.createQuery("from Cozinha", Cozinha.class)
+				.getResultList();
 	}
-
+	
 	@Override
-	public Cozinha adicionar(Cozinha cozinha) {
-		// TODO Auto-generated method stub
-		return null;
+	public Cozinha buscar(Long id) {
+		return manager.find(Cozinha.class, id);
 	}
-
+	
+	@Transactional
+	@Override
+	public Cozinha salvar(Cozinha cozinha) {
+		return manager.merge(cozinha);
+	}
+	
+	@Transactional
 	@Override
 	public void remover(Cozinha cozinha) {
-		// TODO Auto-generated method stub
-		
+		cozinha = buscar(cozinha.getId());
+		manager.remove(cozinha);
 	}
 
-	@Override
-	public Cozinha atualizar(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-		
-		
-		
+
 }

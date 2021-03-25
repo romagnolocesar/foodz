@@ -2,39 +2,34 @@ package com.romagnolocesar.foodz.infrastructure.repository;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.stereotype.Component;
+
 import com.romagnolocesar.foodz.domain.model.FormaPagamento;
 import com.romagnolocesar.foodz.domain.repository.FormaPagamentoRepository;
 
+@Component
 public class FormaPagamentoRepositoryImpl implements FormaPagamentoRepository{
+	
+	@PersistenceContext
+	private EntityManager manager;
 
 	@Override
-	public List<FormaPagamento> todas() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<FormaPagamento> listar() {
+		return manager.createQuery("from FormaPagamento", FormaPagamento.class).getResultList();
 	}
 
 	@Override
-	public FormaPagamento porId(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public FormaPagamento buscar(Long id) {
+		return manager.find(FormaPagamento.class, id);
 	}
 
 	@Override
-	public FormaPagamento adicionar(FormaPagamento formapagamento) {
-		// TODO Auto-generated method stub
-		return null;
+	public FormaPagamento salvar(FormaPagamento formapagamento) {
+		return manager.merge(formapagamento);
 	}
 
-	@Override
-	public void remover(FormaPagamento formapagamento) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public FormaPagamento atualizar(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
