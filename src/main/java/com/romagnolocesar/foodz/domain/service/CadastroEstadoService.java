@@ -4,6 +4,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class CadastroEstadoService {
 		return estadoRespository.salvar(estado);
 	}
 	
-	public ResponseEntity<Estado> atualizar(Long estadoId, Estado estado){
+	public ResponseEntity<?> atualizar(Long estadoId, Estado estado){
 		Estado estadoAtual = estadoRespository.buscar(estadoId);
 		
 		if(estadoAtual != null) {
@@ -32,7 +33,11 @@ public class CadastroEstadoService {
 			return ResponseEntity.ok(estadoAtual);
 		}
 		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity
+				.status(HttpStatus.NOT_FOUND)
+				.body(String.format(
+						"Não existe cadastro de estado com código %d",
+						estadoId));
 	}
 
 	public void remover(Long estadoId) {

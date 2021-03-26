@@ -54,7 +54,7 @@ public class EstadoController {
 	}
 	
 	@PutMapping("/{estadoId}")
-	public ResponseEntity<Estado> atualizar(@PathVariable Long estadoId, @RequestBody Estado estado){
+	public ResponseEntity<?> atualizar(@PathVariable Long estadoId, @RequestBody Estado estado){
 		return cadastroEstadoService.atualizar(estadoId, estado);
 	}
 	
