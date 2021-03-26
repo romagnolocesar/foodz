@@ -28,8 +28,9 @@ public class CadastroEstadoService {
 	public ResponseEntity<?> atualizar(Long estadoId, Estado estado){
 		Optional<Estado> estadoAtual = estadoRespository.findById(estadoId);
 		
-		if(estadoAtual != null) {
-			BeanUtils.copyProperties(estado, estadoAtual, "id"); //Não copiar o campo ID, para manter o ID atual.
+		if(estadoAtual.isPresent()) {
+			estadoAtual = Optional.ofNullable(estadoAtual.get());
+			BeanUtils.copyProperties(estado, estadoAtual.get(), "id"); //Não copiar o campo ID, para manter o ID atual.
 			estadoRespository.save(estadoAtual.get());
 
 			return ResponseEntity.ok(estadoAtual);

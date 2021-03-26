@@ -45,6 +45,7 @@ public class CadastroCidadeService {
 		Optional<Estado> estado = estadoRepository.findById(cidadeAtual.get().getEstado().getId());
 		
 		if(estado.isPresent()){
+			cidadeAtual = Optional.ofNullable(cidadeAtual.get());
 			BeanUtils.copyProperties(cidade, cidadeAtual, "id"); //Não copiar o campo ID, para manter o ID atual.
 			cidadeRepository.save(cidadeAtual.get());
 

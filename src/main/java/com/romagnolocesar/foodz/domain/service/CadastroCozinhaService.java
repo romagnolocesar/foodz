@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.romagnolocesar.foodz.domain.exception.EntidadeEmUsoException;
 import com.romagnolocesar.foodz.domain.exception.EntidadeNaoEncontradaException;
 import com.romagnolocesar.foodz.domain.model.Cozinha;
-import com.romagnolocesar.foodz.domain.model.Restaurante;
 import com.romagnolocesar.foodz.domain.repository.CozinhaRepository;
 
 @Service
@@ -29,10 +28,11 @@ public class CadastroCozinhaService {
 		Optional<Cozinha> cozinhaAtual = cozinhaRepository.findById(cozinhaId);
 		
 		if(cozinhaAtual.isPresent()) {
-			BeanUtils.copyProperties(cozinha, cozinhaAtual, "id"); //Não copiar o campo ID, para manter o ID atual.
+			cozinhaAtual = Optional.ofNullable(cozinhaAtual.get());
+			BeanUtils.copyProperties(cozinha, cozinhaAtual.get(), "id"); //Não copiar o campo ID, para manter o ID atual.
 			cozinhaRepository.save(cozinhaAtual.get());
 
-			return ResponseEntity.ok(cozinhaAtual);
+			return ResponseEntity.ok(cozinhaAtual.get());
 		}
 		
 		return ResponseEntity.notFound().build();
