@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.romagnolocesar.foodz.domain.exception.EntidadeEmUsoException;
 import com.romagnolocesar.foodz.domain.exception.EntidadeNaoEncontradaException;
-import com.romagnolocesar.foodz.domain.model.Cozinha;
 import com.romagnolocesar.foodz.domain.model.Restaurante;
 import com.romagnolocesar.foodz.domain.repository.CozinhaRepository;
 import com.romagnolocesar.foodz.domain.repository.RestauranteRepository;

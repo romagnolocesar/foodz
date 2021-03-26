@@ -19,10 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.romagnolocesar.foodz.domain.exception.EntidadeEmUsoException;
 import com.romagnolocesar.foodz.domain.exception.EntidadeNaoEncontradaException;
-import com.romagnolocesar.foodz.domain.model.Estado;
 import com.romagnolocesar.foodz.domain.model.PermissaoUsuario;
 import com.romagnolocesar.foodz.domain.repository.PermissaoUsuarioRepository;
-import com.romagnolocesar.foodz.domain.service.CadastroEstadoService;
 import com.romagnolocesar.foodz.domain.service.CadastroPermissaoUsuarioService;
 
 @RestController

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.romagnolocesar.foodz.domain.exception.EntidadeEmUsoException;
 import com.romagnolocesar.foodz.domain.exception.EntidadeNaoEncontradaException;
 import com.romagnolocesar.foodz.domain.model.FormaPagamento;
-import com.romagnolocesar.foodz.domain.repository.EstadoRepository;
 import com.romagnolocesar.foodz.domain.repository.FormaPagamentoRepository;
 
 @Service
