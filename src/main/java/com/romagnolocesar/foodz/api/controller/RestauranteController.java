@@ -3,7 +3,9 @@ package com.romagnolocesar.foodz.api.controller;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.romagnolocesar.foodz.domain.exception.EntidadeEmUsoException;
 import com.romagnolocesar.foodz.domain.exception.EntidadeNaoEncontradaException;
+import com.romagnolocesar.foodz.domain.model.Cidade;
+import com.romagnolocesar.foodz.domain.model.Cozinha;
+import com.romagnolocesar.foodz.domain.model.Estado;
 import com.romagnolocesar.foodz.domain.model.Restaurante;
+import com.romagnolocesar.foodz.domain.repository.CozinhaRepository;
 import com.romagnolocesar.foodz.domain.repository.RestauranteRepository;
 import com.romagnolocesar.foodz.domain.service.CadastroRestauranteService;
 
@@ -34,27 +40,52 @@ public class RestauranteController {
 	RestauranteRepository restauranteRepository;
 	
 	@Autowired
+	CozinhaRepository cozinhaRepository;
+	
+	@Autowired
 	CadastroRestauranteService cadastroRestauranteService;
 	
 	@GetMapping
 	public List<Restaurante> listar() {
-		return cadastroRestauranteService.listar(); 
+		return restauranteRepository.findAll(); 
 	}
 	
 	@GetMapping("/{restauranteId}")
-	public ResponseEntity<Restaurante> buscar(@PathVariable Long restauranteId){
-		Restaurante restaurante = cadastroRestauranteService.buscar(restauranteId);
+	public ResponseEntity<?> buscar(@PathVariable Long restauranteId){
+		Optional<Restaurante> restaurante = restauranteRepository.findById(restauranteId);
 		
-		if(restaurante != null) {
-			return ResponseEntity.ok(restaurante);			
+		if(restaurante.isPresent()) {
+			return ResponseEntity.ok(restaurante.get());			
 		}
 		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(String.format(
+						"Não existe cadastro de restaurante com código %d",
+						restauranteId));
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> salvar(@RequestBody Restaurante restaurante) {
+		Optional<Cozinha> cozinha = Optional.ofNullable(restaurante.getCozinha());
+		
+		if(cozinha.isEmpty()) {
+			return ResponseEntity
+					.status(HttpStatus.NOT_FOUND)
+					.body("O campo cozinha é obrigatório.");
+		}else {
+			cozinha = cozinhaRepository.findById(restaurante.getCozinha().getId());
+			if(cozinha.isEmpty()) {
+				return ResponseEntity
+						.status(HttpStatus.NOT_FOUND)
+						.body(
+							String.format(
+								"Não existe cadastro de cozinha com código %d", restaurante.getCozinha().getId()
+							)
+						);
+			}	
+			
+		}
 		try{
 			restaurante = cadastroRestauranteService.salvar(restaurante);
 			return ResponseEntity
@@ -67,17 +98,33 @@ public class RestauranteController {
 	
 	@PutMapping("/{restauranteId}")
 	public ResponseEntity<?> atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
+		Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
+		Optional<Cozinha> cozinhaNova = Optional.ofNullable(restaurante.getCozinha());
 		
-		boolean isRestaurante = this.buscar(restauranteId).getBody() != null ? true : false;
-		
-		if(isRestaurante) {
-			try {
-				return cadastroRestauranteService.atualizar(restauranteId, restaurante);
-			}catch(EntidadeNaoEncontradaException e) {
+		if(cozinhaNova.isEmpty()) {
+			return ResponseEntity
+					.status(HttpStatus.NOT_FOUND)
+					.body("O campo cozinha é obrigatório.");
+		}else {
+			Optional<Cozinha> cozinha = cozinhaRepository.findById(restaurante.getCozinha().getId());
+			if(cozinha.isEmpty()) {
 				return ResponseEntity
 						.status(HttpStatus.NOT_FOUND)
-						.body(e.getMessage());
-			}
+						.body(
+							String.format(
+								"Não existe cadastro de cozinha com código %d", restaurante.getCozinha().getId()
+							)
+						);
+			}	
+			restaurante.setCozinha(cozinha.get());
+		}
+		
+		
+		if(restauranteAtual.isPresent()) {
+			BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id");
+			Restaurante cozinhaSalva = cadastroRestauranteService.salvar(restauranteAtual.get());
+			return ResponseEntity.ok(cozinhaSalva);
+
 		}
 		
 		return ResponseEntity
@@ -103,16 +150,11 @@ public class RestauranteController {
 	public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId, 
 			@RequestBody Map<String, Object> campos){
 		
-		Restaurante restauranteAtual = restauranteRepository.buscar(restauranteId);
-		
-		if(restauranteAtual == null) {
-			return ResponseEntity
-					.status(HttpStatus.NOT_FOUND)
-					.body(String.format(
+		Restaurante restauranteAtual = restauranteRepository.findById(restauranteId)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(
 							"Não existe cadastro de restaurante com código %d",
-							restauranteId));
-		}
-		
+							restauranteId)));
+				
 		merge(campos, restauranteAtual);
 		
 		return atualizar(restauranteId, restauranteAtual);

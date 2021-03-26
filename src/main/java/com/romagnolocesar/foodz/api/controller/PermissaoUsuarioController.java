@@ -1,6 +1,7 @@
 package com.romagnolocesar.foodz.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,16 +27,16 @@ public class PermissaoUsuarioController {
 	
 	@GetMapping
 	public List<PermissaoUsuario> listar(){
-		return permissaoRepository.listar();
+		return permissaoRepository.findAll();
 	}
 	
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<PermissaoUsuario> buscar(@PathVariable Long id ) {
-		PermissaoUsuario permissao = permissaoRepository.buscar(id);
+		Optional<PermissaoUsuario> permissao = permissaoRepository.findById(id);
 		
 		if(permissao != null) {
-			return ResponseEntity.ok(permissao);
+			return ResponseEntity.ok(permissao.get());
 		}
 		
 		return ResponseEntity.notFound().build();
@@ -45,6 +46,6 @@ public class PermissaoUsuarioController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public PermissaoUsuario adicionar(@RequestBody PermissaoUsuario permissao) {
-		return permissaoRepository.salvar(permissao);
+		return permissaoRepository.save(permissao);
 	}
 }

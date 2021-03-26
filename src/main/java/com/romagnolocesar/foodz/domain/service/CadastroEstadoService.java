@@ -1,5 +1,7 @@
 package com.romagnolocesar.foodz.domain.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,15 +22,15 @@ public class CadastroEstadoService {
 	EstadoRepository estadoRespository;
 	
 	public Estado salvar(Estado estado) {
-		return estadoRespository.salvar(estado);
+		return estadoRespository.save(estado);
 	}
 	
 	public ResponseEntity<?> atualizar(Long estadoId, Estado estado){
-		Estado estadoAtual = estadoRespository.buscar(estadoId);
+		Optional<Estado> estadoAtual = estadoRespository.findById(estadoId);
 		
 		if(estadoAtual != null) {
 			BeanUtils.copyProperties(estado, estadoAtual, "id"); //Não copiar o campo ID, para manter o ID atual.
-			estadoRespository.salvar(estadoAtual);
+			estadoRespository.save(estadoAtual.get());
 
 			return ResponseEntity.ok(estadoAtual);
 		}
@@ -42,7 +44,7 @@ public class CadastroEstadoService {
 
 	public void remover(Long estadoId) {
 		try {
-				estadoRespository.remover(estadoId);
+				estadoRespository.deleteById(estadoId);
 		} catch (EmptyResultDataAccessException e) {
 			throw new 
 			EntidadeNaoEncontradaException(

@@ -1,11 +1,13 @@
 package com.romagnolocesar.foodz.domain.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -26,61 +28,38 @@ public class CadastroCidadeService {
 	EstadoRepository estadoRepository;
 	
 	public List<Cidade> listar(){
-		return cidadeRepository.listar();
+		return cidadeRepository.findAll();
 	}
 	
 	public Cidade buscar(Long cidadeId) {
-		Cidade cidades = cidadeRepository.buscar(cidadeId);
+		Cidade cidades = cidadeRepository.findById(cidadeId).get();
 		return cidades;	
 	}
 	
 	public Cidade salvar(Cidade cidade){
-		Long estadoId = cidade.getEstado().getId();
-		Estado estado = estadoRepository.buscar(estadoId);
-		
-		if(estado == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format(
-							"Não existe cadastro de estado com código %d",
-							estadoId
-					)
-				);
-		}
-	
-		cidade.setEstado(estado);
-		
-		return cidadeRepository.salvar(cidade);
+		return cidadeRepository.save(cidade);
 	}
 	
-	public ResponseEntity<Cidade> atualizar(Long cidadeId, Cidade cidade){
-		Cidade cidadeAtual = cidadeRepository.buscar(cidadeId);
-		Long estadoId = cidade.getEstado().getId();
-		Estado estado = estadoRepository.buscar(estadoId);
+	public ResponseEntity<?> atualizar(Long cidadeId, Cidade cidade){
+		Optional<Cidade> cidadeAtual = cidadeRepository.findById(cidadeId);
+		Optional<Estado> estado = estadoRepository.findById(cidadeAtual.get().getEstado().getId());
 		
-		if(estado == null) {
-			throw new EntidadeNaoEncontradaException(
-					String.format(
-							"Não existe cadastro de estado com código %d",
-							estadoId
-					)
-				);
-		}
-	
-		cidade.setEstado(estado);
-		
-		if(cidadeAtual != null) {
+		if(estado.isPresent()){
 			BeanUtils.copyProperties(cidade, cidadeAtual, "id"); //Não copiar o campo ID, para manter o ID atual.
-			cidadeRepository.salvar(cidadeAtual);
+			cidadeRepository.save(cidadeAtual.get());
 
-			return ResponseEntity.ok(cidadeAtual);
+			return ResponseEntity.ok(cidadeAtual.get());
 		}
 		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
+				"Não existe um cadastro de cidade com código %d", 
+				cidadeId
+		));
 	}
 	
 	public void remover(Long cidadeId) {
 		try {
-			cidadeRepository.remover(cidadeId);
+			cidadeRepository.deleteById(cidadeId);
 		} catch (EmptyResultDataAccessException e) {
 			throw new 
 			EntidadeNaoEncontradaException(

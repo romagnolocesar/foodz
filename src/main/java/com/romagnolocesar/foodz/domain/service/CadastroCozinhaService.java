@@ -1,5 +1,7 @@
 package com.romagnolocesar.foodz.domain.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.romagnolocesar.foodz.domain.exception.EntidadeEmUsoException;
 import com.romagnolocesar.foodz.domain.exception.EntidadeNaoEncontradaException;
 import com.romagnolocesar.foodz.domain.model.Cozinha;
+import com.romagnolocesar.foodz.domain.model.Restaurante;
 import com.romagnolocesar.foodz.domain.repository.CozinhaRepository;
 
 @Service
@@ -19,15 +22,15 @@ public class CadastroCozinhaService {
 	CozinhaRepository cozinhaRepository;
 		
 	public Cozinha salvar(Cozinha cozinha) {
-		return cozinhaRepository.salvar(cozinha);
+		return cozinhaRepository.save(cozinha);
 	}
 	
-	public ResponseEntity<Cozinha> atualizar(Long cozinhaId, Cozinha cozinha){
-		Cozinha cozinhaAtual = cozinhaRepository.buscar(cozinhaId);
+	public ResponseEntity<?> atualizar(Long cozinhaId, Cozinha cozinha){
+		Optional<Cozinha> cozinhaAtual = cozinhaRepository.findById(cozinhaId);
 		
-		if(cozinhaAtual != null) {
+		if(cozinhaAtual.isPresent()) {
 			BeanUtils.copyProperties(cozinha, cozinhaAtual, "id"); //Não copiar o campo ID, para manter o ID atual.
-			cozinhaRepository.salvar(cozinhaAtual);
+			cozinhaRepository.save(cozinhaAtual.get());
 
 			return ResponseEntity.ok(cozinhaAtual);
 		}
@@ -37,7 +40,7 @@ public class CadastroCozinhaService {
 	
 	public void remover(Long cozinhaId) {
 		try {
-				cozinhaRepository.remover(cozinhaId);
+				cozinhaRepository.deleteById(cozinhaId);
 		} catch (EmptyResultDataAccessException e) {
 			throw new 
 			EntidadeNaoEncontradaException(

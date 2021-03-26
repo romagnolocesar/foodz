@@ -1,6 +1,7 @@
 package com.romagnolocesar.foodz.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,15 +27,15 @@ public class FormaPagamentoController {
 	
 	@GetMapping
 	public List<FormaPagamento> listar(){
-		return formaPagamentoRepository.listar();
+		return formaPagamentoRepository.findAll();
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<FormaPagamento> buscar(@PathVariable Long id) {
-		FormaPagamento formapagamento = formaPagamentoRepository.buscar(id);
+		Optional<FormaPagamento> formapagamento = formaPagamentoRepository.findById(id);
 		
 		if(formapagamento != null) {
-			return ResponseEntity.ok(formapagamento);
+			return ResponseEntity.ok(formapagamento.get());
 		}
 		
 		return ResponseEntity.notFound().build();
@@ -45,6 +46,6 @@ public class FormaPagamentoController {
 	@ResponseStatus(HttpStatus.CREATED)
 	@Transactional
 	public FormaPagamento adicionar(@RequestBody FormaPagamento formaPagamento) {
-		return formaPagamentoRepository.salvar(formaPagamento);
+		return formaPagamentoRepository.save(formaPagamento);
 	}
 }

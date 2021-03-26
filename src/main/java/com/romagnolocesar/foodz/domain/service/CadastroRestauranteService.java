@@ -1,6 +1,7 @@
 package com.romagnolocesar.foodz.domain.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,39 +26,25 @@ public class CadastroRestauranteService {
 	CozinhaRepository cozinhaRepository;
 	
 	public List<Restaurante> listar(){
-		return restauranteRepository.listar();
+		return restauranteRepository.findAll();
 	}
 	
-	public Restaurante buscar(Long restauranteId) {
-		Restaurante restaurante = restauranteRepository.buscar(restauranteId);
+	public Optional<Restaurante> buscar(Long restauranteId) {
+		Optional<Restaurante> restaurante = restauranteRepository.findById(restauranteId);
 		return restaurante;
 		
 	}
 	
-	public Restaurante salvar(Restaurante restaurante) {
-		Long cozinhaId = restaurante.getCozinha().getId();
-		Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
-		
-		if(cozinha == null) {
-			throw new EntidadeNaoEncontradaException(
-				String.format(
-						"Não existe cadastro de cozinha com código %d",
-						cozinhaId
-				)
-			);
-		}
-	
-		restaurante.setCozinha(cozinha);
-		
-		return restauranteRepository.salvar(restaurante);
+	public Restaurante salvar(Restaurante restaurante) {		
+		return restauranteRepository.save(restaurante);
 	}
 	
 	public ResponseEntity<?> atualizar(Long restauranteId, Restaurante restaurante){
-		Restaurante restauranteAtual = restauranteRepository.buscar(restauranteId);
+		Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restauranteId);
 		
-		if(restauranteAtual != null) {
+		if(restauranteAtual.isPresent()) {
 			BeanUtils.copyProperties(restaurante, restauranteAtual, "id"); //Não copiar o campo ID, para manter o ID atual.
-			restauranteRepository.salvar(restauranteAtual);
+			restauranteRepository.save(restauranteAtual.get());
 
 			return ResponseEntity.ok(restauranteAtual);
 		}
@@ -67,7 +54,7 @@ public class CadastroRestauranteService {
 	
 	public void remover(Long restauranteId) {
 		try {
-			restauranteRepository.remover(restauranteId);
+			restauranteRepository.deleteById(restauranteId);
 		} catch (EmptyResultDataAccessException e) {
 			throw new 
 			EntidadeNaoEncontradaException(

@@ -2,12 +2,10 @@ package com.romagnolocesar.foodz.domain.repository;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.romagnolocesar.foodz.domain.model.Restaurante;
 
-public interface RestauranteRepository {
-	List<Restaurante> listar();
-	Restaurante buscar(Long id);
-	Restaurante adicionar(Restaurante restaurante);
-	Restaurante salvar(Restaurante restaurante);
-	void remover(Long restauranteId);
+public interface RestauranteRepository extends JpaRepository<Restaurante, Long>{
+
 }

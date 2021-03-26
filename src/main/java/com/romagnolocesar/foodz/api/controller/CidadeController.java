@@ -1,7 +1,9 @@
 package com.romagnolocesar.foodz.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,7 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.romagnolocesar.foodz.domain.exception.EntidadeNaoEncontradaException;
 import com.romagnolocesar.foodz.domain.model.Cidade;
+import com.romagnolocesar.foodz.domain.model.Estado;
+import com.romagnolocesar.foodz.domain.model.Restaurante;
 import com.romagnolocesar.foodz.domain.repository.CidadeRepository;
+import com.romagnolocesar.foodz.domain.repository.EstadoRepository;
+import com.romagnolocesar.foodz.domain.repository.RestauranteRepository;
 import com.romagnolocesar.foodz.domain.service.CadastroCidadeService;
 
 @RestController
@@ -29,27 +35,53 @@ public class CidadeController {
 	private CidadeRepository cidadeRepository;
 	
 	@Autowired
+	private EstadoRepository estadoRepository;
+	
+	@Autowired
 	private CadastroCidadeService cadastroCidadeService;
 	
 	@GetMapping
 	public List<Cidade> listar() {
-		return cidadeRepository.listar();
+		return cidadeRepository.findAll();
 	}
 
 	@GetMapping("/{cidadeId}")
-	public ResponseEntity<Cidade> buscar(@PathVariable Long cidadeId) {
-		Cidade cidade = cidadeRepository.buscar(cidadeId);
+	public ResponseEntity<?> buscar(@PathVariable Long cidadeId) {
+		Optional<Cidade> cidade = cidadeRepository.findById(cidadeId);
 		
-		if (cidade != null) {
-			return ResponseEntity.ok(cidade);
+		if (cidade.isPresent()) {
+			return ResponseEntity.ok(cidade.get());
 		}
 		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(String.format(
+						"Não existe cadastro de cidade com código %d",
+						cidadeId));
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> salvar(@RequestBody Cidade cidade) {
+		Optional<Estado> estado = Optional.ofNullable(cidade.getEstado());
+		
+		if(estado.isEmpty()) {
+			return ResponseEntity
+					.status(HttpStatus.NOT_FOUND)
+					.body("O campo estado é obrigatório.");
+		}else {
+			estado = estadoRepository.findById(cidade.getEstado().getId());
+			if(estado.isEmpty()) {
+				return ResponseEntity
+						.status(HttpStatus.NOT_FOUND)
+						.body(
+							String.format(
+								"Não existe cadastro de estado com código %d", cidade.getEstado().getId()
+							)
+						);
+			}	
+			
+		}
+		
 		try {
 			cidade = cadastroCidadeService.salvar(cidade);
 			return ResponseEntity
@@ -62,16 +94,33 @@ public class CidadeController {
 	
 	@PutMapping("/{cidadeId}")
 	public ResponseEntity<?> atualizar(@PathVariable Long cidadeId, @RequestBody Cidade cidade){
-		boolean isCidade = this.buscar(cidadeId).getBody() != null ? true : false;
+		Optional<Cidade> cidadeAtual = cidadeRepository.findById(cidadeId);
+		Optional<Estado> estadoNovo = Optional.ofNullable(cidade.getEstado());
 		
-		if(isCidade) {
-			try {
-				return cadastroCidadeService.atualizar(cidadeId, cidade);
-			}catch(EntidadeNaoEncontradaException e) {
+		if(estadoNovo.isEmpty()) {
+			return ResponseEntity
+					.status(HttpStatus.NOT_FOUND)
+					.body("O campo estado é obrigatório.");
+		}else {
+			Optional<Estado> estado = estadoRepository.findById(cidade.getEstado().getId());
+			if(estado.isEmpty()) {
 				return ResponseEntity
 						.status(HttpStatus.NOT_FOUND)
-						.body(e.getMessage());
-			}
+						.body(
+							String.format(
+								"Não existe cadastro de estado com código %d", cidade.getEstado().getId()
+							)
+						);
+			}	
+			cidade.setEstado(estado.get());
+		}
+		
+		
+		
+		if(cidadeAtual.isPresent()) {
+			BeanUtils.copyProperties(cidade, cidadeAtual.get(), "id");
+			Cidade cidadeSalva = cadastroCidadeService.salvar(cidadeAtual.get());
+			return ResponseEntity.ok(cidadeSalva);
 		}
 		
 		return ResponseEntity
