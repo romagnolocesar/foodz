@@ -2,9 +2,11 @@ package com.romagnolocesar.foodz.domain.service;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.romagnolocesar.foodz.domain.exception.EntidadeEmUsoException;
@@ -48,6 +50,19 @@ public class CadastroRestauranteService {
 		restaurante.setCozinha(cozinha);
 		
 		return restauranteRepository.salvar(restaurante);
+	}
+	
+	public ResponseEntity<?> atualizar(Long restauranteId, Restaurante restaurante){
+		Restaurante restauranteAtual = restauranteRepository.buscar(restauranteId);
+		
+		if(restauranteAtual != null) {
+			BeanUtils.copyProperties(restaurante, restauranteAtual, "id"); //Não copiar o campo ID, para manter o ID atual.
+			restauranteRepository.salvar(restauranteAtual);
+
+			return ResponseEntity.ok(restauranteAtual);
+		}
+		
+		return ResponseEntity.notFound().build();
 	}
 	
 	public void remover(Long restauranteId) {
