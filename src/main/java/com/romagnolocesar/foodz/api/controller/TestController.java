@@ -1,5 +1,8 @@
 package com.romagnolocesar.foodz.api.controller;
 
+import static com.romagnolocesar.foodz.infrastructure.repository.spec.RestauranteSpecs.comFreteGratis;
+import static com.romagnolocesar.foodz.infrastructure.repository.spec.RestauranteSpecs.comNomeSemelhante;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +17,6 @@ import com.romagnolocesar.foodz.domain.model.Cozinha;
 import com.romagnolocesar.foodz.domain.model.Restaurante;
 import com.romagnolocesar.foodz.domain.repository.CozinhaRepository;
 import com.romagnolocesar.foodz.domain.repository.RestauranteRepository;
-import com.romagnolocesar.foodz.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
-import com.romagnolocesar.foodz.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 
 @RestController
 @RequestMapping("/teste")
@@ -71,20 +72,9 @@ public class TestController {
 	
 	@GetMapping("/restaurantes/com-frete-gratis")
 	public List<Restaurante> restaurantesComFreteGratis(String nome){
-		var comFreteGratis = new RestauranteComFreteGratisSpec();
-		var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
-		
-		return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
-		
+		return restauranteRepository.findAll(comFreteGratis()
+				.and(comNomeSemelhante(nome)));
 	}
 	
-	@GetMapping("/restaurantes/com-frete-gratis-por-cozinha")
-	public List<Restaurante> restaurantesComFreteGratis(String nome, Long cozinha){
-		var comFreteGratis = new RestauranteComFreteGratisSpec();
-		var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
-		
-		return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
-		
-	}
 	
 }
