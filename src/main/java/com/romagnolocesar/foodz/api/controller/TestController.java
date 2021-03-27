@@ -75,5 +75,10 @@ public class TestController {
 		return restauranteRepository.findComFreteGratis(nome);
 	}
 	
+	@GetMapping("/restaurantes/primeiro")
+	public Optional<Restaurante> restaurantePrimeiro(String nome){
+		return restauranteRepository.buscarPrimeiro();
+	}
+	
 	
 }

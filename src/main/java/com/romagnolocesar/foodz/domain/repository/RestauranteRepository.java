@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.query.Param;
 
@@ -12,7 +11,7 @@ import com.romagnolocesar.foodz.domain.model.Restaurante;
 
 public interface RestauranteRepository 
 		extends 
-		JpaRepository<Restaurante, Long>, RestauranteRepositoryQueries,
+		CustomJpaRepository<Restaurante, Long>, RestauranteRepositoryQueries,
 		JpaSpecificationExecutor<Restaurante>
 		{
 	
@@ -25,5 +24,6 @@ public interface RestauranteRepository
 	Optional<Restaurante> findFirstByNomeContaining(String nome);
 	
 	int countByCozinhaId(Long cozinha);
+	
 
 }
