@@ -46,3 +46,19 @@ insert into permissao_usuario(nome, descricao) values ('Alterar Permissoes', 'Al
 
 -- RESTAURANTE FORMA PAGAMENTO --
 insert into restaurante_forma_pagamento(restaurante_id, forma_pagamento_id) VALUES (1, 1), (1,2), (1,3), (2,3), (3,2), (3,3);
+
+-- PRODUTOS --
+insert into produto(ativo, descricao, nome, preco, restaurante_id) VALUES (1, '10 Sushi+ 10 Hosomaki+ 5 Temaki+ 6 Hotroll', 'Combo Casal', 80, 4);
+insert into produto(ativo, descricao, nome, preco, restaurante_id) VALUES (1, 'Pizza de quatro queijos de (Mussarela, Parmessao, Provolone, Catupiry)', 'Pizza Queijo', 40.5, 1);
+insert into produto(ativo, descricao, nome, preco, restaurante_id) VALUES (1, 'Pizza Portuguesa de (Ervilha, Presunto, Queijo, Catupiry)', 'Pizza Portuguesa', 32.5, 1);
+insert into produto(ativo, descricao, nome, preco, restaurante_id) VALUES (1, 'Macarrão Bolongnesa com molho de tomate caseiro', 'Macarrão Bolongnesa', 12.32, 2);
+insert into produto(ativo, descricao, nome, preco, restaurante_id) VALUES (1, 'Hamburguer Gourmet com Molho especial', 'Hamburguer Baron II', 20, 2);
+insert into produto(ativo, descricao, nome, preco, restaurante_id) VALUES (1, 'Hamburguer Gourmet de picanha com queijo emental ', 'Hamburguer Baron III', 20, 3);
+
+-- RESTAURANTES PRODUTOS --
+-- insert into restaurante_produtos(restaurante_id, produtos_id) values (1, 2);
+-- insert into restaurante_produtos(restaurante_id, produtos_id) values (1, 3);
+-- insert into restaurante_produtos(restaurante_id, produtos_id) values (2, 4);
+-- insert into restaurante_produtos(restaurante_id, produtos_id) values (3, 6);
+-- insert into restaurante_produtos(restaurante_id, produtos_id) values (4, 1);
+-- insert into restaurante_produtos(restaurante_id, produtos_id) values (2, 5);
