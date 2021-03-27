@@ -14,6 +14,8 @@ import com.romagnolocesar.foodz.domain.model.Cozinha;
 import com.romagnolocesar.foodz.domain.model.Restaurante;
 import com.romagnolocesar.foodz.domain.repository.CozinhaRepository;
 import com.romagnolocesar.foodz.domain.repository.RestauranteRepository;
+import com.romagnolocesar.foodz.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
+import com.romagnolocesar.foodz.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
 
 @RestController
 @RequestMapping("/teste")
@@ -67,9 +69,22 @@ public class TestController {
 	
 	
 	
-	@GetMapping("/restaurantes/count-por-cozinha")
-	public int restaurantesCountByCozinha(Long cozinhaId){
-		return restauranteRepository.countByCozinhaId(cozinhaId);
+	@GetMapping("/restaurantes/com-frete-gratis")
+	public List<Restaurante> restaurantesComFreteGratis(String nome){
+		var comFreteGratis = new RestauranteComFreteGratisSpec();
+		var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+		
+		return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+		
+	}
+	
+	@GetMapping("/restaurantes/com-frete-gratis-por-cozinha")
+	public List<Restaurante> restaurantesComFreteGratis(String nome, Long cozinha){
+		var comFreteGratis = new RestauranteComFreteGratisSpec();
+		var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+		
+		return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+		
 	}
 	
 }
