@@ -10,3 +10,5 @@ INSERT INTO `cidade`(`id`, `nome_cidade`, `nome_estado`) VALUES (1, 'Uberlândia
 INSERT INTO `cidade`(`id`, `nome_cidade`, `nome_estado`) VALUES (2, 'Belo Horizonte', 'Minas Gerais');
 INSERT INTO `cidade`(`id`, `nome_cidade`, `nome_estado`) VALUES (3, 'São Paulo', 'São Paulo');
 INSERT INTO `cidade`(`id`, `nome_cidade`, `nome_estado`) VALUES (4, 'Recife', 'Pernambuco');
+INSERT INTO `cidade`(`id`, `nome_cidade`, `nome_estado`) VALUES (5, 'Amazonas', 'Amazonas');
+INSERT INTO `cidade`(`id`, `nome_cidade`, `nome_estado`) VALUES (6, 'Salvador', 'Bahia');
