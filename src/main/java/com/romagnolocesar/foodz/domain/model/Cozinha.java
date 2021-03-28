@@ -22,7 +22,7 @@ public class Cozinha {
 	@Column(nullable = false)
 	private String nome;
 	
-	@Column(name = "DESCCC")
+	@Column(nullable = true)
 	private String descricao;
 	
 }
