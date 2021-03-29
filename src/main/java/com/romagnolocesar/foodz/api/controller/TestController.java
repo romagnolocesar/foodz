@@ -1,8 +1,5 @@
 package com.romagnolocesar.foodz.api.controller;
 
-import static com.romagnolocesar.foodz.infrastructure.repository.spec.RestauranteSpecs.comFreteGratis;
-import static com.romagnolocesar.foodz.infrastructure.repository.spec.RestauranteSpecs.comNomeSemelhante;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;

@@ -8,6 +8,8 @@ delete from forma_pagamento;
 delete from permissao;
 delete from restaurante_forma_pagamento;
 delete from produto;
+delete from pedido;
+delete from item_pedido;
 set foreign_key_checks = 1;
 
 -- ZERANDO ID AUTOINCREMENT --
@@ -20,6 +22,8 @@ alter table grupo auto_increment = 1;
 alter table permissao auto_increment = 1;
 alter table produto auto_increment = 1;
 alter table usuario auto_increment = 1;
+alter table pedido auto_increment = 1;
+alter table item_pedido auto_increment = 1;
 
 
 -- COZINHAS ---
@@ -87,6 +91,16 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Bif
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('T-Bone', 'Corte muito saboroso, com um osso em formato de T, sendo de um lado o contrafilé e do outro o filé mignon', 89, 1, 4);
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, bacon, ovo, salada e maionese', 19, 1, 5);
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
+
+-- USUARIOS --
+INSERT INTO usuario(nome, email, senha, data_cadastro) VALUES ('Janaina', 'janaina@engenharia.com', '123321', '2021-03-16 23:24:00');
+INSERT INTO usuario(nome, email, senha, data_cadastro) VALUES ('César Romagnolo', 'cesar@engenharia.com', '123321', '2021-03-16 23:24:00');
+INSERT INTO usuario(nome, email, senha, data_cadastro) VALUES ('João Magnolio', 'magjoao@catador.com', '123321', '2021-03-16 23:24:00');
+INSERT INTO usuario(nome, email, senha, data_cadastro) VALUES ('Rosaina Pereira', 'rose@domestic.com', '123321', '2021-03-16 23:24:00');
+
+-- PEDIDOS --
+INSERT INTO pedido(data_cancelamento, data_confirmacao, data_criacao, data_entrega, endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, status, sub_total, taxa_frete, valor_total, cliente_id, endereco_cidade_id, forma_pagamento_id, restaurante_id) VALUES ('2021-03-28 23:22:13', '2021-03-29 23:22:23', '2021-04-04 23:22:28', '2021-03-16 23:22:32', 'Bandeirantes', '13671-928', 'Na frente dos lixos de construção', 'Rua Priquito', '19', 1, 150.00, 15.00, 165.00, 1, 1, 1, 1);
+INSERT INTO pedido(data_cancelamento, data_confirmacao, data_criacao, data_entrega, endereco_bairro, endereco_cep, endereco_complemento, endereco_logradouro, endereco_numero, status, sub_total, taxa_frete, valor_total, cliente_id, endereco_cidade_id, forma_pagamento_id, restaurante_id) VALUES ('2021-03-28 23:22:13', '2021-03-29 23:22:23', '2021-04-04 23:22:28', '2021-03-16 23:22:32', 'Ipiranga', '13671-928', 'Perto da Lotérica ', 'Rua Vem Cem ', '6969', 1, 18.00, 5.00, 23.00, 2, 2, 2, 2);
 
 -- RESTAURANTES PRODUTOS --
 -- delete from restaurante_produtos

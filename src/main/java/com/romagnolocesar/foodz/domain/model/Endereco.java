@@ -15,8 +15,8 @@ public class Endereco {
 	@Column(name="endereco_cep")
 	private String cep;
 	
-	@Column(name="endereco_longradouro")
-	private String longradouro;
+	@Column(name="endereco_logradouro")
+	private String logradouro;
 	
 	@Column(name="endereco_numero")
 	private String numero;
@@ -27,7 +27,7 @@ public class Endereco {
 	@Column(name="endereco_bairro")
 	private String bairro;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "endereco_cidade_id")
 	private Cidade cidade;
 	
